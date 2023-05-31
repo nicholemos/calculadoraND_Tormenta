@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Creature Calculator</title>
+  <script>
+    function addCreature() {
+      var creatureName = document.getElementById("creatureName").value;
+      var creatureND = document.getElementById("creatureND").value;
+      var creatureQuantity = parseInt(document.getElementById("creatureQuantity").value);
+      var creatureList = document.getElementById("creatureList");
+
+      var creatureRow = document.createElement("tr");
+      var nameCell = document.createElement("td");
+      var ndCell = document.createElement("td");
+      var quantityCell = document.createElement("td");
+      var difficultyCell = document.createElement("td");
+      var removeCell = document.createElement("td");
+
+      nameCell.innerHTML = creatureName;
+      ndCell.innerHTML = creatureND;
+      quantityCell.innerHTML = creatureQuantity;
+
+      var difficulty = calculateDifficulty(creatureND, creatureQuantity);
+      difficultyCell.innerHTML = difficulty.toFixed(2);
+
+      var removeButton = document.createElement("button");
+      removeButton.innerHTML = "Remover";
+      removeButton.onclick = function() {
+        creatureList.removeChild(creatureRow);
+        updateTotalND();
+      };
+
+      removeCell.appendChild(removeButton);
+
+      creatureRow.appendChild(nameCell);
+      creatureRow.appendChild(ndCell);
+      creatureRow.appendChild(quantityCell);
+      creatureRow.appendChild(difficultyCell);
+      creatureRow.appendChild(removeCell);
+
+      creatureList.appendChild(creatureRow);
+
+      document.getElementById("creatureName").value = "";
+      document.getElementById("creatureND").value = "0";
+      document.getElementById("creatureQuantity").value = "";
+
+      updateTotalND();
+    }
+
+   function calculateDifficulty(creatureND, creatureQuantity) {
+  var difficulty = parseFloat(creatureND);
+
+      if (creatureND < 1) {
+        difficulty *= creatureQuantity;
+      } else if (creatureQuantity > 1) {
+        var doublingCount = Math.log2(creatureQuantity);
+        difficulty += doublingCount * 2;
+      }
+
+      return difficulty;
+    }
+
+
+   function updateTotalND() {
+  var difficultyCounts = {}; // Objeto para armazenar a contagem de cada dificuldade
+  var highestDifficulty = 0;
+  var rows = document.getElementById("creatureList").rows;
+
+  for (var i = 1; i < rows.length; i++) {
+    var difficultyCell = rows[i].cells[3];
+    var difficulty = parseFloat(difficultyCell.innerHTML);
+    if (difficulty > highestDifficulty) {
+      highestDifficulty = difficulty;
+    }
+    // Incrementa a contagem da dificuldade no objeto difficultyCounts
+    if (difficultyCounts[difficulty]) {
+      difficultyCounts[difficulty]++;
+    } else {
+      difficultyCounts[difficulty] = 1;
+    }
+  }
+
+  var totalND = highestDifficulty;
+  var difficultyKeys = Object.keys(difficultyCounts);
+
+  for (var i = 0; i < difficultyKeys.length; i++) {
+    var difficulty = parseFloat(difficultyKeys[i]);
+    var count = difficultyCounts[difficulty];
+    var difference = highestDifficulty - difficulty;
+    
+    // Verifica se existem outras dificuldades iguais à dificuldade atual
+    if (count > 1 && difficulty === highestDifficulty) {
+      totalND += 2 * (count - 1); // Incrementa +2 multiplicado pelo número de dificuldades iguais encontradas (exceto a primeira)
+    } else if (difference === 1) {
+      totalND += count; // Incrementa a contagem da dificuldade atual
+    } else if (difference === 2) {
+      totalND += 0.5 * count; // Incrementa +0.5 multiplicado pelo número de dificuldades que estejam 2 pontos abaixo da maior
+    } else if (difference >= 3) {
+      totalND += 0; // Incrementa +0 para cada dificuldade que esteja 3 ou mais pontos abaixo da maior
+    }
+  }
+
+  document.getElementById("totalND").innerHTML = totalND.toFixed(2);
+}
+
+  </script>
+</head>
+<body>
+  <h1>Calculadora de ND</h1>
+
+  <label for="creatureName">Nome da Criatura:</label>
+  <input type="text" id="creatureName"><br><br>
+
+  <label for="creatureND">ND da Criatura:</label>
+  <select id="creatureND">
+    <option value="0.25">1/4</option>
+    <option value="0.5">1/2</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+  </select><br><br>
+
+  <label for="creatureQuantity">Quantidade:</label>
+  <input type="number" id="creatureQuantity"><br><br>
+
+  <button onclick="addCreature()">Adicionar Criatura</button><br><br>
+
+  <table id="creatureList">
+    <tr>
+      <th>Criatura</th>
+      <th>ND</th>
+      <th>Quantidade</th>
+      <th>Dificuldade</th>
+      <th>Remover</th>
+    </tr>
+  </table>
+
+  <p>Soma da Dificuldade de Maior Valor: <span id="totalND">0</span></p>
+</body>
+</html>
