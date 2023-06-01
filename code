@@ -47,8 +47,8 @@
       updateTotalND();
     }
 
-   function calculateDifficulty(creatureND, creatureQuantity) {
-  var difficulty = parseFloat(creatureND);
+    function calculateDifficulty(creatureND, creatureQuantity) {
+      var difficulty = parseFloat(creatureND);
 
       if (creatureND < 1) {
         difficulty *= creatureQuantity;
@@ -60,50 +60,53 @@
       return difficulty;
     }
 
+    function updateTotalND() {
+      var difficultyCounts = {}; // Objeto para armazenar a contagem de cada dificuldade
+      var highestDifficulty = 0;
+      var rows = document.getElementById("creatureList").rows;
 
-   function updateTotalND() {
-  var difficultyCounts = {}; // Objeto para armazenar a contagem de cada dificuldade
-  var highestDifficulty = 0;
-  var rows = document.getElementById("creatureList").rows;
+      for (var i = 1; i < rows.length; i++) {
+        var difficultyCell = rows[i].cells[3];
+        var difficulty = parseFloat(difficultyCell.innerHTML);
+        if (difficulty > highestDifficulty) {
+          highestDifficulty = difficulty;
+        }
+        // Incrementa a contagem da dificuldade no objeto difficultyCounts
+        if (difficultyCounts[difficulty]) {
+          difficultyCounts[difficulty]++;
+        } else {
+          difficultyCounts[difficulty] = 1;
+        }
+      }
 
-  for (var i = 1; i < rows.length; i++) {
-    var difficultyCell = rows[i].cells[3];
-    var difficulty = parseFloat(difficultyCell.innerHTML);
-    if (difficulty > highestDifficulty) {
-      highestDifficulty = difficulty;
+      var totalND = highestDifficulty;
+      var difficultyKeys = Object.keys(difficultyCounts);
+
+      for (var i = 0; i < difficultyKeys.length; i++) {
+        var difficulty = parseFloat(difficultyKeys[i]);
+        var count = difficultyCounts[difficulty];
+        var difference = highestDifficulty - difficulty;
+
+        // Verifica se existem outras dificuldades iguais à dificuldade atual
+        if (count > 1 && difficulty === highestDifficulty) {
+          totalND += 2 * (count - 1); // Incrementa +2 multiplicado pelo número de dificuldades iguais encontradas (exceto a primeira)
+        } else if (difference === 1) {
+          totalND += count; // Incrementa a contagem da dificuldade atual
+        } else if (difference === 2) {
+          totalND += 0.5 * count; // Incrementa +0.5 multiplicado pelo número de dificuldades que estejam 2 pontos abaixo da maior
+        } else if (difference >= 3) {
+          totalND += 0; // Incrementa +0 para cada dificuldade que esteja 3 ou mais pontos abaixo da maior
+        }
+      }
+
+      document.getElementById("totalND").innerHTML = totalND.toFixed(2);
     }
-    // Incrementa a contagem da dificuldade no objeto difficultyCounts
-    if (difficultyCounts[difficulty]) {
-      difficultyCounts[difficulty]++;
-    } else {
-      difficultyCounts[difficulty] = 1;
-    }
-  }
-
-  var totalND = highestDifficulty;
-  var difficultyKeys = Object.keys(difficultyCounts);
-
-  for (var i = 0; i < difficultyKeys.length; i++) {
-    var difficulty = parseFloat(difficultyKeys[i]);
-    var count = difficultyCounts[difficulty];
-    var difference = highestDifficulty - difficulty;
-    
-    // Verifica se existem outras dificuldades iguais à dificuldade atual
-    if (count > 1 && difficulty === highestDifficulty) {
-      totalND += 2 * (count - 1); // Incrementa +2 multiplicado pelo número de dificuldades iguais encontradas (exceto a primeira)
-    } else if (difference === 1) {
-      totalND += count; // Incrementa a contagem da dificuldade atual
-    } else if (difference === 2) {
-      totalND += 0.5 * count; // Incrementa +0.5 multiplicado pelo número de dificuldades que estejam 2 pontos abaixo da maior
-    } else if (difference >= 3) {
-      totalND += 0; // Incrementa +0 para cada dificuldade que esteja 3 ou mais pontos abaixo da maior
-    }
-  }
-
-  document.getElementById("totalND").innerHTML = totalND.toFixed(2);
-}
-
   </script>
+  <style>
+    .red-text {
+      color: red;
+    }
+  </style>
 </head>
 <body>
   <h1>Calculadora de ND</h1>
@@ -152,6 +155,8 @@
     </tr>
   </table>
 
-  <p>Soma da Dificuldade de Maior Valor: <span id="totalND">0</span></p>
+  <p>ND Total do Combate: <span id="totalND">0</span></p>
+  <p><strong class="red-text">Em caso de número decimal, sempre se arredonda para baixo.</strong></p>
+
 </body>
 </html>
