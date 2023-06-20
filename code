@@ -1,162 +1,244 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Creature Calculator</title>
-  <script>
-    function addCreature() {
-      var creatureName = document.getElementById("creatureName").value;
-      var creatureND = document.getElementById("creatureND").value;
-      var creatureQuantity = parseInt(document.getElementById("creatureQuantity").value);
-      var creatureList = document.getElementById("creatureList");
+<meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+   rel="stylesheet"
+   integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+   crossorigin="anonymous">
 
-      var creatureRow = document.createElement("tr");
-      var nameCell = document.createElement("td");
-      var ndCell = document.createElement("td");
-      var quantityCell = document.createElement("td");
-      var difficultyCell = document.createElement("td");
-      var removeCell = document.createElement("td");
+  <title>Calculadora de ND</title>
 
-      nameCell.innerHTML = creatureName;
-      ndCell.innerHTML = creatureND;
-      quantityCell.innerHTML = creatureQuantity;
+  <script src="script.js"></script>
 
-      var difficulty = calculateDifficulty(creatureND, creatureQuantity);
-      difficultyCell.innerHTML = difficulty.toFixed(2);
-
-      var removeButton = document.createElement("button");
-      removeButton.innerHTML = "Remover";
-      removeButton.onclick = function() {
-        creatureList.removeChild(creatureRow);
-        updateTotalND();
-      };
-
-      removeCell.appendChild(removeButton);
-
-      creatureRow.appendChild(nameCell);
-      creatureRow.appendChild(ndCell);
-      creatureRow.appendChild(quantityCell);
-      creatureRow.appendChild(difficultyCell);
-      creatureRow.appendChild(removeCell);
-
-      creatureList.appendChild(creatureRow);
-
-      document.getElementById("creatureName").value = "";
-      document.getElementById("creatureND").value = "0";
-      document.getElementById("creatureQuantity").value = "";
-
-      updateTotalND();
+  <style type="text/css">
+    @font-face {
+      font-family: 'Tormenta';
+      src: url('Tormenta.ttf');
     }
 
-    function calculateDifficulty(creatureND, creatureQuantity) {
-      var difficulty = parseFloat(creatureND);
-
-      if (creatureND < 1) {
-        difficulty *= creatureQuantity;
-      } else if (creatureQuantity > 1) {
-        var doublingCount = Math.log2(creatureQuantity);
-        difficulty += doublingCount * 2;
-      }
-
-      return difficulty;
-    }
-
-    function updateTotalND() {
-      var difficultyCounts = {}; // Objeto para armazenar a contagem de cada dificuldade
-      var highestDifficulty = 0;
-      var rows = document.getElementById("creatureList").rows;
-
-      for (var i = 1; i < rows.length; i++) {
-        var difficultyCell = rows[i].cells[3];
-        var difficulty = parseFloat(difficultyCell.innerHTML);
-        if (difficulty > highestDifficulty) {
-          highestDifficulty = difficulty;
-        }
-        // Incrementa a contagem da dificuldade no objeto difficultyCounts
-        if (difficultyCounts[difficulty]) {
-          difficultyCounts[difficulty]++;
-        } else {
-          difficultyCounts[difficulty] = 1;
-        }
-      }
-
-      var totalND = highestDifficulty;
-      var difficultyKeys = Object.keys(difficultyCounts);
-
-      for (var i = 0; i < difficultyKeys.length; i++) {
-        var difficulty = parseFloat(difficultyKeys[i]);
-        var count = difficultyCounts[difficulty];
-        var difference = highestDifficulty - difficulty;
-
-        // Verifica se existem outras dificuldades iguais à dificuldade atual
-        if (count > 1 && difficulty === highestDifficulty) {
-          totalND += 2 * (count - 1); // Incrementa +2 multiplicado pelo número de dificuldades iguais encontradas (exceto a primeira)
-        } else if (difference === 1) {
-          totalND += count; // Incrementa a contagem da dificuldade atual
-        } else if (difference === 2) {
-          totalND += 0.5 * count; // Incrementa +0.5 multiplicado pelo número de dificuldades que estejam 2 pontos abaixo da maior
-        } else if (difference >= 3) {
-          totalND += 0; // Incrementa +0 para cada dificuldade que esteja 3 ou mais pontos abaixo da maior
-        }
-      }
-
-      document.getElementById("totalND").innerHTML = totalND.toFixed(2);
-    }
-  </script>
-  <style>
     .red-text {
+      color: #EEEE00;
+      font-weight: bold;
+      background-color: #696969;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    header {
+      padding: 10px;
+      background-color: rgba(246, 182, 118, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      width: 150px;
+      margin-right: 10px;
+    }
+
+    .qr-code {
+      width: 50px;
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Tormenta', sans-serif;
+      color: red;
+      text-size: 40;
+    }
+
+    body {
+      background-image: url("vectorius.jpeg");
+      background-repeat: no-repeat;
+      background-size: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .input-window,
+    .button-table-window {
+      background-color: #f2f2f2;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      max-width: 800px;
+      margin-bottom: 20px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.85;
+    }
+
+    .input-window label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .input-window input,
+    .input-window select {
+      padding: 8px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .input-window input[type="number"] {
+      width: auto;
+    }
+
+    .input-window input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .button-table-window {
+      margin-top: 20px;
+    }
+
+    .button-table-window button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 3px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .button-table-window table {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .button-table-window th {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+    }
+
+    .button-table-window td {
+      padding: 10px;
+    }
+
+    .button-table-window p {
+      margin-bottom: 10px;
+    }
+
+    .button-table-window p#nd-total {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      background-color: #f2f2f2;
+      padding: 10px;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #888;
+    }
+    
+    #mensagemTesouro {
+      font-style: italic;
+      font-weight: bold;
+    }
+
+    #mensagemCriatura {
+      font-style: italic;
+      font-weight: bold;
       color: red;
     }
+
   </style>
 </head>
 <body>
-  <h1>Calculadora de ND</h1>
+  <header> 
+    <div class="logo-container">
+      <a href="https://discord.gg/Sq57eGcyZR" target="_blank"><img src="logo_vectora.png" alt="Logo" class="logo"></a>
+      <a href="https://discord.gg/Sq57eGcyZR" target="_blank"><img src="qr_code.png" alt="QR Code" class="qr-code"></a>
+    </div>
+  </header>
 
-  <label for="creatureName">Nome da Criatura:</label>
-  <input type="text" id="creatureName"><br><br>
+  <h1 style="color: red; font-weight: bold; font-family: Tormenta; font-size: 48px;">Calculadora de ND</h1>
 
-  <label for="creatureND">ND da Criatura:</label>
-  <select id="creatureND">
-    <option value="0.25">1/4</option>
-    <option value="0.5">1/2</option>
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-    <option value="5">5</option>
-    <option value="6">6</option>
-    <option value="7">7</option>
-    <option value="8">8</option>
-    <option value="9">9</option>
-    <option value="10">10</option>
-    <option value="11">11</option>
-    <option value="12">12</option>
-    <option value="13">13</option>
-    <option value="14">14</option>
-    <option value="15">15</option>
-    <option value="16">16</option>
-    <option value="17">17</option>
-    <option value="18">18</option>
-    <option value="19">19</option>
-    <option value="20">20</option>
-  </select><br><br>
+  <div class="input-window">
+    <label for="creatureName">Criatura:</label>
+    <input type="text" id="creatureName" placeholder="Digite o nome da criatura"><br><br>
 
-  <label for="creatureQuantity">Quantidade:</label>
-  <input type="number" id="creatureQuantity"><br><br>
+    <label for="creatureND">ND da Criatura:</label>
+    <select id="creatureND">
+      <option value="0.25">1/4</option>
+      <option value="0.5">1/2</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+      <option value="13">13</option>
+      <option value="14">14</option>
+      <option value="15">15</option>
+      <option value="16">16</option>
+      <option value="17">17</option>
+      <option value="18">18</option>
+      <option value="19">19</option>
+      <option value="20">20</option>
+    </select><br><br>
 
-  <button onclick="addCreature()">Adicionar Criatura</button><br><br>
+    <label for="creatureQuantity">Quantidade:</label>
+    <input type="number" id="creatureQuantity"><br><br>
 
-  <table id="creatureList">
+    <button onclick="addCreature()">Adicionar Criatura</button>
+    
+
+  </div>
+
+  <div class="button-table-window">
+    <table id="creatureList">
     <tr>
       <th>Criatura</th>
       <th>ND</th>
       <th>Quantidade</th>
+      <th></th>
+      <th></th>
       <th>Dificuldade</th>
       <th>Remover</th>
     </tr>
-  </table>
+    
+    </table>
+    <p id="mensagemCriatura"></p>
 
-  <p>ND Total do Combate: <span id="totalND">0</span></p>
-  <p><strong class="red-text">Em caso de número decimal, sempre se arredonda para baixo.</strong></p>
+    <p id="nd-total">ND Total do Combate: <span id="totalND">0</span></p>
+    <p><strong class="red-text">Em caso de número decimal, sempre se arredonda para baixo.</strong></p>
+    <br><br><button type="button" class="btn btn-primary" onclick="calcTesouro()">Calcular Tesouro</button><br><br>    
 
+    <p id="tesouro"></p>
+    <p id="mensagemTesouro"></p>
+
+  </div>
+
+  <footer>
+    Desenvolvido por <a href="https://github.com/nicholemos" target="_blank">Janus</a> para a <a href="https://discord.gg/Sq57eGcyZR" target="_blank">Armada de Vectora</a> em 30/05/2023<br>
+    Design by Felipe Scintillia 
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
 </body>
 </html>
