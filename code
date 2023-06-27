@@ -51,7 +51,7 @@
       text-align: center;
       font-family: 'Tormenta', sans-serif;
       color: red;
-      text-size: 40;
+      text-size: 50;
     }
 
     body {
@@ -93,18 +93,13 @@
       width: auto;
     }
 
-    .input-window input[type="submit"] {
-      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
-    }
-
+    
     .button-table-window {
       margin-top: 20px;
     }
 
     .button-table-window button {
-      background-color: #4CAF50;
+      background-color: #6E0000;
       color: white;
       cursor: pointer;
       padding: 10px 20px;
@@ -112,6 +107,7 @@
       border-radius: 3px;
       font-size: 16px;
       margin-bottom: 10px;
+      font-weight: bold;
     }
 
     .button-table-window table {
@@ -120,7 +116,7 @@
     }
 
     .button-table-window th {
-      background-color: #4CAF50;
+      background-color: #6E0000;
       color: white;
       padding: 10px;
     }
@@ -200,8 +196,8 @@
       <option value="20">20</option>
     </select><br><br>
 
-    <label for="creatureQuantity">Quantidade:</label>
-    <input type="number" id="creatureQuantity"><br><br>
+    <label for="creatureQuantity" >Quantidade:</label>
+    <input type="number" id="creatureQuantity" value='1'><br><br>
 
     <button onclick="addCreature()">Adicionar Criatura</button>
     
@@ -209,28 +205,36 @@
   </div>
 
   <div class="button-table-window">
-    <table id="creatureList">
-    <tr>
-      <th>Criatura</th>
-      <th>ND</th>
-      <th>Quantidade</th>
-      <th></th>
-      <th></th>
-      <th>Dificuldade</th>
-      <th>Remover</th>
-    </tr>
-    
-    </table>
-    <p id="mensagemCriatura"></p>
+      <table id="creatureList">
+        <tr>
+          <th>Criatura</th>
+          <th>ND</th>
+          <th>Quantidade</th>
+          <th></th>
+          <th></th>
+          <th>Dificuldade</th>
+          <th>Remover</th>
+          <th>Tesouro do ND</th>
+        </tr>
+      </table>
+      <p id="mensagemCriatura"></p>
+    </div>
 
-    <p id="nd-total">ND Total do Combate: <span id="totalND">0</span></p>
-    <p><strong class="red-text">Em caso de número decimal, sempre se arredonda para baixo.</strong></p>
-    <br><br><button type="button" class="btn btn-primary" onclick="calcTesouro()">Calcular Tesouro</button><br><br>    
+    <div class="button-table-window">
+      <h3>Rolagem Tesouros</h3>
+      <div id="resultadoTesouro"><td id="teste"></td></div>
+      <p id="mensagemTesouro"></p>
+  
+      <br><p><strong class="red-text">Em caso de número decimal, sempre se arredonda para baixo.</strong></p>
+      <p id="nd-total">ND Total do Combate: <span id="totalND">0</span></p><br>
+      <hr>
+      <h3>Tesouro ND Total (regra opcional)</h3>
+      <br><button type="button" class="btn btn-primary" onclick="calcTesouro()">Tesouro ND Total</button><br>
 
-    <p id="tesouro"></p>
-    <p id="mensagemTesouro"></p>
-
-  </div>
+      <p id="tesouro"></p>
+      <p id="mensagem1Tesouro"></p>
+    </div>
+  
 
   <footer>
     Desenvolvido por <a href="https://github.com/nicholemos" target="_blank">Janus</a> para a <a href="https://discord.gg/Sq57eGcyZR" target="_blank">Armada de Vectora</a> em 30/05/2023<br>
