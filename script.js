@@ -235,6 +235,12 @@ function updateTotalND() {
 function calcTesouro() {
 	var totalND = parseFloat(document.getElementById("totalND").innerHTML);
 
+	// Verifica se totalND é maior que 0 antes de continuar
+    if (totalND <= 0 || isNaN(totalND)) {
+        alert("O valor de totalND não é válido para calcular o tesouro.");
+        return; // Sai da função se totalND for 0 ou nulo
+    }
+
 	// Apaga o tesouro existente, se houver
 	var tesouroElement = document.getElementById("tesouro");
 	tesouroElement.innerHTML = "";
