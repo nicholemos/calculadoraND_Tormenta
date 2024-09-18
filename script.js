@@ -83,7 +83,9 @@ function addCreature() {
 	creatureRow.appendChild(testeCell); // Adicione a célula à linha
 
 	creatureList.appendChild(creatureRow);
-	updateTotalND();
+	//Após adicionar, organize por dificuldade
+    	sortTableByDifficulty();
+    	updateTotalND();
 
 	document.getElementById("creatureName").value = "";
 	document.getElementById("creatureND").value = "0";
