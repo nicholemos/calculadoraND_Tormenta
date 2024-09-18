@@ -183,7 +183,7 @@ function calculateDifficulty(creatureND, creatureQuantity) {
 			fala = "Vírus instalado com sucesso. Seu computador se formatará em 5,4,3,2...";
 		} else if (creatureQuantity >= 1024) {
 			difficulty = creatureND + 20;
-			fala = "Parabéns, você chegou a +20 no ND. Sabe o que significa? NADA. O sistema não reconhece ameaças acima de ND 20 então todo seu esforço foi inútil. Está feliz agora?";
+			fala = "Parabéns, você chegou a +20 no ND. Sabe o que significa? NADA. O sistema não reima deconhece ameaças ac ND 20 então todo seu esforço foi inútil. Está feliz agora?";
 		}
 
 	}
@@ -242,6 +242,9 @@ function calcTesouro() {
         alert("O valor de totalND não é válido para calcular o tesouro.");
         return; // Sai da função se totalND for 0 ou nulo
     }
+
+	// Arredonda totalND para baixo para evitar problemas com valores não inteiros
+    	totalND = Math.floor(totalND);
 
 	// Apaga o tesouro existente, se houver
 	var tesouroElement = document.getElementById("tesouro");
