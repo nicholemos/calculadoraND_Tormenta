@@ -239,9 +239,9 @@ function updateTotalND() {
 	totalND += highestDifficulty; // Adiciona o maior valor de dificuldade ao total do ND
 
 	// LIMITE MÁXIMO
-	if (totalND > 20) {
-		totalND = 20;
-	}
+if (totalND > 20) {
+    totalND = 20;
+}
 
 	document.getElementById("totalND").innerHTML = totalND.toFixed(2);
 	// mini badge no header (se existir)
