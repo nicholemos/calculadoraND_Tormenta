@@ -1,0 +1,363 @@
+/* ==============================
+   Calculadora de ND — Estilo STR (assinatura)
+   ============================== */
+
+@font-face{
+  font-family:"Tormenta";
+  src:url("Tormenta.ttf") format("truetype");
+}
+
+:root{
+  --str-slate:#2f3f4f;
+  --str-slate-2:#344a5c;
+  --str-accent:#e0483f;
+
+  --bg-main:#f2f4f7;
+  --card-bg:#fff;
+
+  --border:#111;
+  --radius:14px;
+
+  --text-main:#0f172a;
+}
+
+/* ===== BASE ===== */
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--text-main);
+  background:var(--bg-main);
+  background-image:url("vectorius.jpeg");
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-attachment:fixed;
+}
+
+/* leve “filtro” para manter legibilidade */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:rgba(242,244,247,.78);
+  pointer-events:none;
+  z-index:-1;
+}
+
+a{ color:inherit; }
+
+/* ===== HEADER (assinatura STR) ===== */
+.header{
+  background:var(--str-slate);
+  color:#fff;
+  padding:16px 16px 12px;
+  text-align:center;
+}
+
+.header::after{
+  content:"";
+  display:block;
+  height:4px;
+  background:var(--str-accent);
+  margin-top:12px;
+}
+
+.header-top{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  margin-bottom:8px;
+}
+
+.logo-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo{ width:140px; height:auto; display:block; }
+.qr-code{ width:46px; height:auto; display:block; }
+
+.header-title{
+  font-family:"Tormenta";
+  letter-spacing:1px;
+  font-size:3rem;
+  margin:6px 0 0;
+}
+
+.header-subtitle{
+  opacity:.9;
+  margin:6px 0 0;
+  font-size:.95rem;
+}
+
+/* mini badge do ND total (header) */
+.nd-mini{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  margin-top:10px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:2px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.15);
+}
+
+.nd-mini-label{
+  font-weight:900;
+  font-size:.85rem;
+  opacity:.95;
+}
+
+.nd-mini-value{
+  background:var(--str-accent);
+  color:#fff;
+  padding:4px 10px;
+  border-radius:999px;
+  font-weight:900;
+  line-height:1;
+}
+
+/* ===== LAYOUT ===== */
+.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:22px 16px;
+}
+
+.container-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+
+.nd-layout{
+  align-items:start;
+}
+
+/* ===== PAINÉIS ===== */
+.panel{
+  background:var(--card-bg);
+  border:2px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+  box-shadow:0 10px 18px rgba(0,0,0,.06);
+}
+
+.panel-title{
+  font-family:"Tormenta";
+  color:var(--str-accent);
+  margin:0 0 12px;
+  font-size:1.35rem;
+}
+
+.sub-title{
+  font-family:"Tormenta";
+  margin:0 0 10px;
+}
+
+/* ===== FORM ===== */
+.field{ margin-bottom:12px; }
+.field label{
+  display:block;
+  font-weight:800;
+  margin:0 0 6px;
+  color:#111827;
+}
+
+input,
+select{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:2px solid var(--border);
+  background:#f4fbff;
+}
+
+.field-inline{
+  max-width:220px;
+}
+
+/* ===== BOTÕES ===== */
+.btn{
+  height:40px;
+  border-radius:12px;
+  border:2px solid var(--border);
+  padding:0 14px;
+  font-weight:900;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:.15s;
+}
+
+.btn-primary{
+  background:var(--str-accent);
+  color:#fff;
+  border-color:#111827;
+}
+
+.btn-outline{
+  background:#fff;
+  color:#111827;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.02);
+}
+
+/* ===== TABELA ===== */
+.table-wrap{ overflow-x:auto; }
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+  border:2px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.table th{
+  background:#f6f7fb;
+  font-family:"Tormenta";
+  text-align:left;
+  padding:10px;
+  border-bottom:2px solid var(--border);
+  white-space:nowrap;
+}
+
+.table td{
+  padding:10px;
+  border-bottom:1px solid #ddd;
+  vertical-align:middle;
+}
+
+.table tr:hover{ background:#eef6ff; }
+
+/* botões dentro da tabela ( + / - / remover / rolar ) */
+.table-btn{
+  border:2px solid var(--border);
+  background:#fff;
+  border-radius:10px;
+  padding:6px 10px;
+  font-weight:900;
+  cursor:pointer;
+  transition:.15s;
+  white-space:nowrap;
+}
+
+.table-btn:hover{
+  background:#eaf4ff;
+  transform:translateY(-1px);
+}
+
+.table-btn-icon{
+  width:34px;
+  height:34px;
+  padding:0;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.table-btn-accent{
+  background:var(--str-accent);
+  color:#fff;
+  border-color:#111827;
+}
+
+.table-btn-accent:hover{
+  filter:brightness(1.05);
+  background:var(--str-accent);
+}
+
+.table-btn-danger{
+  background:#fff;
+  color:#b91c1c;
+  border-color:#b91c1c;
+}
+
+.table-btn-danger:hover{
+  background:#fee2e2;
+}
+
+/* ===== TEXTOS / NOTAS ===== */
+.note{
+  background:#f6f7fb;
+  border:1px solid rgba(0,0,0,.12);
+  padding:10px 12px;
+  border-radius:12px;
+  margin:12px 0;
+}
+
+.divider{ border:none; border-top:1px solid rgba(0,0,0,.15); margin:14px 0; }
+
+.message{ margin:10px 0 0; font-weight:700; }
+.message-danger{ color:#b91c1c; }
+
+.result-box{
+  border:2px solid var(--border);
+  border-radius:12px;
+  padding:10px 12px;
+  background:#fff;
+  min-height:44px;
+}
+
+.total-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:10px;
+}
+
+.total-pill{
+  background:var(--str-slate-2);
+  color:#fff;
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+  text-align:center;
+  padding:14px 12px;
+  font-size:.85rem;
+  color:#334155;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (min-width:1024px){
+  .nd-layout{
+    grid-template-columns: 2.2fr 1fr;
+  }
+
+  /* Tesouros vira sidebar no desktop */
+  .nd-layout > section[aria-label="Tesouros"]{
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    position: sticky;
+    top: 18px;
+    align-self: start;
+    max-height: calc(100vh - 36px);
+    overflow: auto;
+  }
+
+  /* Os outros painéis ficam na coluna esquerda */
+  .nd-layout > section[aria-label="Adicionar criatura"],
+  .nd-layout > section[aria-label="Lista de criaturas"]{
+    grid-column: 1;
+  }
+}
+
+@media (max-width:600px){
+  .header-title{ font-size:2.2rem; }
+  .logo{ width:120px; }
+  .qr-code{ width:42px; }
+}
