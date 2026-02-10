@@ -26,6 +26,7 @@ function addCreature() {
 
 	var minusButton = document.createElement("button");
 	minusButton.innerHTML = "-";
+	minusButton.className = "table-btn table-btn-icon";
 	minusButton.onclick = function () {
 		var currentQuantity = parseInt(quantityCell.innerHTML);
 		if (currentQuantity > 1) {
@@ -39,6 +40,7 @@ function addCreature() {
 
 	var plusButton = document.createElement("button");
 	plusButton.innerHTML = "+";
+	plusButton.className = "table-btn table-btn-icon";
 	plusButton.onclick = function () {
 		var currentQuantity = parseInt(quantityCell.innerHTML);
 		quantityCell.innerHTML = currentQuantity + 1;
@@ -56,6 +58,7 @@ function addCreature() {
 
 	var removeButton = document.createElement("button");
 	removeButton.innerHTML = "Remover";
+	removeButton.className = "table-btn table-btn-danger";
 	removeButton.onclick = function () {
 		creatureList.removeChild(creatureRow);
 		updateTotalND();
@@ -65,6 +68,7 @@ function addCreature() {
 
 	var testeButton = document.createElement("button"); // Botão de teste
 	testeButton.innerHTML = "Rolar";
+	testeButton.className = "table-btn table-btn-accent";
 	// Defina o comportamento do botão de teste aqui
 	testeButton.onclick = function () {
 		console.log("Botão de teste clicado!");
@@ -84,8 +88,8 @@ function addCreature() {
 
 	creatureList.appendChild(creatureRow);
 	//Após adicionar, organize por dificuldade
-    	sortTableByDifficulty();
-    	updateTotalND();
+	sortTableByDifficulty();
+	updateTotalND();
 
 	document.getElementById("creatureName").value = "";
 	document.getElementById("creatureND").value = "0";
@@ -192,6 +196,10 @@ function calculateDifficulty(creatureND, creatureQuantity) {
 		difficulty = Math.floor(difficulty);
 	}
 
+	if (difficulty > 20) {
+		difficulty = 20;
+	}
+
 	var falaElement = document.getElementById("mensagemCriatura");
 	falaElement.innerHTML = fala;
 
@@ -230,7 +238,15 @@ function updateTotalND() {
 
 	totalND += highestDifficulty; // Adiciona o maior valor de dificuldade ao total do ND
 
+	// LIMITE MÁXIMO
+	if (totalND > 20) {
+		totalND = 20;
+	}
+
 	document.getElementById("totalND").innerHTML = totalND.toFixed(2);
+	// mini badge no header (se existir)
+	var headerBadge = document.getElementById("headerTotalND");
+	if (headerBadge) headerBadge.innerHTML = totalND.toFixed(2);
 }
 
 
@@ -238,13 +254,13 @@ function calcTesouro() {
 	var totalND = parseFloat(document.getElementById("totalND").innerHTML);
 
 	// Verifica se totalND é maior que 0 antes de continuar
-    if (totalND <= 0 || isNaN(totalND)) {
-        alert("O valor de totalND não é válido para calcular o tesouro.");
-        return; // Sai da função se totalND for 0 ou nulo
-    }
+	if (totalND <= 0 || isNaN(totalND)) {
+		alert("O valor de totalND não é válido para calcular o tesouro.");
+		return; // Sai da função se totalND for 0 ou nulo
+	}
 
 	// Arredonda totalND para baixo para evitar problemas com valores não inteiros
-    	totalND = Math.floor(totalND);
+	totalND = Math.floor(totalND);
 
 	// Apaga o tesouro existente, se houver
 	var tesouroElement = document.getElementById("tesouro");
